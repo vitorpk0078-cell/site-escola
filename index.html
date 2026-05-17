@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>VTractor - Tecnologia e Potência</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#081b08;
+    color:white;
+    overflow-x:hidden;
+}
+
+/* ANIMAÇÃO */
+
+.fade{
+    opacity:0;
+    transform:translateY(40px);
+    transition:1s;
+}
+
+.fade.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* NAVBAR */
+
+nav{
+    position:fixed;
+    top:0;
+    width:100%;
+    height:85px;
+    background:rgba(0,0,0,0.95);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 25px;
+    z-index:1000;
+    box-shadow:0 0 20px black;
+}
+
+.logo{
+    color:#69ff3b;
+    font-size:34px;
+    font-weight:bold;
+}
+
+/* MENU */
+
+.menu-btn{
+    font-size:36px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.menu-btn:hover{
+    color:#69ff3b;
+}
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:-310px;
+    width:300px;
+    height:100%;
+    background:#050505;
+    padding-top:110px;
+    transition:.4s;
+    z-index:999;
+}
+
+.sidebar.active{
+    left:0;
+}
+
+.sidebar a{
+    display:block;
+    padding:20px 30px;
+    color:white;
+    text-decoration:none;
+    font-size:22px;
+    transition:.3s;
+}
+
+.sidebar a:hover{
+    background:#69ff3b;
+    color:black;
+}
+
+/* HEADER */
+
+header{
+    min-height:100vh;
+
+    background:
+    linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+    url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=1600&auto=format&fit=crop');
+
+    background-size:cover;
+    background-position:center;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+
+    padding:120px 7%;
+}
+
+header h1{
+    font-size:clamp(55px,8vw,95px);
+    color:#69ff3b;
+}
+
+header p{
+    margin-top:25px;
+    max-width:900px;
+    font-size:clamp(18px,2vw,28px);
+    line-height:1.8;
+}
+
+/* BOTÕES */
+
+.botoes{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-top:35px;
+}
+
+.btn{
+    display:inline-block;
+    background:#69ff3b;
+    color:black;
+    padding:16px 35px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:bold;
+    transition:.3s;
+    animation:pulse 1.5s infinite;
+}
+
+.btn:hover{
+    transform:scale(1.05);
+    background:white;
+}
+
+.btn2{
+    display:inline-block;
+    border:2px solid #69ff3b;
+    color:#69ff3b;
+    padding:16px 35px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:bold;
+    transition:.3s;
+    background:transparent;
+}
+
+.btn2:hover{
+    background:#69ff3b;
+    color:black;
+}
+
+@keyframes pulse{
+
+    0%{
+        box-shadow:0 0 0 0 rgba(105,255,59,.8);
+    }
+
+    70%{
+        box-shadow:0 0 0 18px rgba(105,255,59,0);
+    }
+
+    100%{
+        box-shadow:0 0 0 0 rgba(105,255,59,0);
+    }
+
+}
+
+/* SECTIONS */
+
+section{
+    padding:120px 7%;
+}
+
+section h2{
+    text-align:center;
+    color:#69ff3b;
+    font-size:clamp(36px,5vw,60px);
+    margin-bottom:60px;
+}
+
+/* HISTORIA */
+
+.historia{
+    display:flex;
+    gap:45px;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.historia img{
+    width:100%;
+    max-width:500px;
+    border-radius:25px;
+    box-shadow:0 0 25px black;
+}
+
+.historia-texto{
+    flex:1;
+    font-size:20px;
+    line-height:2;
+}
+
+/* CARDS */
+
+.tratores{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+    gap:30px;
+}
+
+.card{
+    background:#102810;
+    border-radius:25px;
+    overflow:hidden;
+    transition:.4s;
+    cursor:pointer;
+    box-shadow:0 0 20px black;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+.card img{
+    width:100%;
+    height:260px;
+    object-fit:cover;
+}
+
+.card h3{
+    color:#69ff3b;
+    padding:20px;
+    font-size:30px;
+}
+
+.card p{
+    padding:0 20px 30px;
+    font-size:18px;
+    line-height:1.8;
+}
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.95);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:2000;
+    padding:20px;
+}
+
+.modal-content{
+    background:#102810;
+    max-width:950px;
+    width:100%;
+    border-radius:25px;
+    overflow:hidden;
+    animation:aparecer .5s;
+}
+
+.modal img{
+    width:100%;
+    height:420px;
+    object-fit:cover;
+}
+
+.modal-text{
+    padding:35px;
+}
+
+.modal-text h3{
+    color:#69ff3b;
+    font-size:40px;
+    margin-bottom:20px;
+}
+
+.modal-text p{
+    font-size:19px;
+    line-height:1.9;
+}
+
+.fechar{
+    position:absolute;
+    top:20px;
+    right:30px;
+    font-size:45px;
+    cursor:pointer;
+}
+
+@keyframes aparecer{
+    from{
+        opacity:0;
+        transform:scale(.8);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+/* RESULTADOS */
+
+.resultado-box{
+    display:flex;
+    gap:30px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.box{
+    background:#102810;
+    width:280px;
+    padding:45px;
+    border-radius:25px;
+    text-align:center;
+}
+
+.box h3{
+    color:#69ff3b;
+    font-size:50px;
+    margin-bottom:15px;
+}
+
+/* AVALIAÇÕES */
+
+.avaliacoes{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+    gap:30px;
+}
+
+.avaliacao{
+    background:#102810;
+    padding:35px;
+    border-radius:25px;
+}
+
+.estrelas{
+    color:gold;
+    font-size:28px;
+}
+
+.cliente{
+    color:#69ff3b;
+    font-size:28px;
+    margin-top:12px;
+}
+
+.avaliacao p{
+    margin-top:20px;
+    line-height:1.8;
+}
+
+/* FEEDBACK */
+
+.feedback-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+    gap:30px;
+}
+
+.feedback-box{
+    background:#102810;
+    padding:35px;
+    border-radius:25px;
+}
+
+.feedback-box h3{
+    margin-bottom:20px;
+    color:#69ff3b;
+}
+
+.opcoes{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.opcoes button{
+    border:none;
+    padding:12px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.opcoes button:hover{
+    transform:scale(1.05);
+}
+
+.salvo{
+    margin-top:15px;
+    color:#69ff3b;
+    display:none;
+}
+
+/* LOJAS */
+
+.lojas{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:30px;
+}
+
+.loja{
+    background:#102810;
+    padding:30px;
+    border-radius:25px;
+}
+
+.loja h3{
+    color:#69ff3b;
+    margin-bottom:18px;
+    font-size:30px;
+}
+
+.loja p{
+    margin:10px 0;
+    line-height:1.8;
+}
+
+iframe{
+    width:100%;
+    height:260px;
+    border:none;
+    border-radius:20px;
+    margin-top:20px;
+}
+
+.botoes-loja{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+/* SUPORTE */
+
+.suporte{
+    text-align:center;
+    background:black;
+}
+
+.suporte p{
+    margin:20px 0;
+    font-size:22px;
+}
+
+/* FOOTER */
+
+footer{
+    background:#020202;
+    text-align:center;
+    padding:30px;
+}
+
+/* RESPONSIVO */
+
+@media(max-width:768px){
+
+    section{
+        padding:100px 6%;
+    }
+
+    .sidebar{
+        width:260px;
+    }
+
+    .modal img{
+        height:240px;
+    }
+
+    .modal-text h3{
+        font-size:30px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">VTractor</div>
+
+    <div class="menu-btn" onclick="abrirMenu()" aria-label="Abrir Menu">
+        ☰
+    </div>
+
+</nav>
+
+<div class="sidebar" id="sidebar">
+
+    <a href="#inicio" onclick="fecharMenu()">Início</a>
+    <a href="#historia" onclick="fecharMenu()">Nossa História</a>
+    <a href="#tratores" onclick="fecharMenu()">Tratores</a>
+    <a href="#resultados" onclick="fecharMenu()">Resultados</a>
+    <a href="#avaliacoes" onclick="fecharMenu()">Avaliações</a>
+    <a href="#feedback" onclick="fecharMenu()">Feedback</a>
+    <a href="#comprar" onclick="fecharMenu()">Onde Comprar</a>
+    <a href="#suporte" onclick="fecharMenu()">Suporte</a>
+
+</div>
+
+<header id="inicio">
+
+    <h1>VTractor</h1>
+
+    <p>
+        Tecnologia, potência e inovação para transformar o agronegócio brasileiro.
+        A VTractor se tornou referência nacional em tratores modernos e de alta performance.
+    </p>
+
+    <div class="botoes">
+
+        <a href="#tratores" class="btn">
+            VER TRATORES
+        </a>
+
+        <a href="#comprar" class="btn2">
+            ONDE COMPRAR
+        </a>
+
+    </div>
+
+</header>
+
+<section id="historia" class="fade">
+
+    <h2>Nossa História</h2>
+
+    <div class="historia">
+
+        <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=1200&auto=format&fit=crop" alt="Fazenda moderna">
+
+        <div class="historia-texto">
+
+            <p>
+                Há cerca de cinco anos, a VTractor enfrentava dificuldades no mercado agrícola.
+                Com a chegada do empresário <strong>Hanry Sousa Gomes</strong>,
+                formado em Administração, a empresa passou por uma transformação completa.
+            </p>
+
+            <br>
+
+            <p>
+                Investimos em inovação, atendimento especializado e tecnologia avançada,
+                tornando a VTractor líder nacional em vendas de tratores em 2026.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section id="tratores" class="fade">
+
+    <h2>Tratores Modernos</h2>
+
+    <div class="tratores">
+
+        <div class="card"
+        onclick="abrirTrator(
+        'trator1.png',
+        'VTractor Power X',
+        'Modelo desenvolvido para grandes produções agrícolas, com motor de alta potência, tecnologia inteligente e economia avançada de combustível.')">
+
+            <img src="trator1.png" alt="Trator moderno">
+
+            <h3>VTractor Power X</h3>
+
+            <p>
+                Potência extrema para grandes operações agrícolas.
+            </p>
+
+        </div>
+
+        <div class="card"
+        onclick="abrirTrator(
+        'trator2.png',
+        'VTractor Turbo 900',
+        'Tecnologia premium, cabine confortável, direção inteligente e desempenho superior para trabalhos intensos.')">
+
+            <img src="trator2.png" alt="Trator moderno">
+
+            <h3>VTractor Turbo 900</h3>
+
+            <p>
+                Conforto, desempenho e resistência.
+            </p>
+
+        </div>
+
+        <div class="card"
+        onclick="abrirTrator(
+        'trator3.png',
+        'VTractor Evolution',
+        'O modelo mais moderno da linha VTractor, criado para agricultores que buscam produtividade máxima.')">
+
+            <img src="trator3.png" alt="Trator moderno">
+
+            <h3>VTractor Evolution</h3>
+
+            <p>
+                Tecnologia do futuro para o agronegócio.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- MODAL -->
+
+<div class="modal" id="modal">
+
+    <div class="fechar" onclick="fecharModal()">✖</div>
+
+    <div class="modal-content">
+
+        <img id="modal-img">
+
+        <div class="modal-text">
+
+            <h3 id="modal-title"></h3>
+
+            <p id="modal-desc"></p>
+
+            <a href="https://wa.me/5599985554406"
+            target="_blank"
+            class="btn">
+
+                TENHO INTERESSE
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<section id="resultados" class="fade">
+
+    <h2>Nossos Resultados</h2>
+
+    <div class="resultado-box">
+
+        <div class="box">
+            <h3>+15MIL</h3>
+            <p>Tratores vendidos em todo o Brasil.</p>
+        </div>
+
+        <div class="box">
+            <h3>TOP 1</h3>
+            <p>Empresa líder em vendas em 2026.</p>
+        </div>
+
+        <div class="box">
+            <h3>TOP 5</h3>
+            <p>Entre as maiores empresas agrícolas de 2025.</p>
+        </div>
+
+    </div>
+
+</section>
+
+<section id="avaliacoes" class="fade">
+
+    <h2>Avaliações</h2>
+
+    <div class="avaliacoes">
+
+        <div class="avaliacao">
+            <div class="estrelas">★★★★★</div>
+            <div class="cliente">João Ricardo</div>
+            <p>
+                Excelente atendimento e tratores extremamente modernos.
+            </p>
+        </div>
+
+        <div class="avaliacao">
+            <div class="estrelas">★★★★★</div>
+            <div class="cliente">Carlos Mendes</div>
+            <p>
+                Minha produtividade aumentou muito após comprar na VTractor.
+            </p>
+        </div>
+
+        <div class="avaliacao">
+            <div class="estrelas">★★★★★</div>
+            <div class="cliente">Paulo Henrique</div>
+            <p>
+                Empresa séria e entrega extremamente rápida.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<section id="feedback" class="fade">
+
+    <h2>Feedback</h2>
+
+    <div class="feedback-container">
+
+        <div class="feedback-box">
+
+            <h3>O visual do site foi agradável?</h3>
+
+            <div class="opcoes">
+
+                <button onclick="salvarFeedback(this)">
+                    Ruim
+                </button>
+
+                <button onclick="salvarFeedback(this)">
+                    Regular
+                </button>
+
+                <button onclick="salvarFeedback(this)">
+                    Bom
+                </button>
+
+            </div>
+
+            <div class="salvo">
+                Feedback salvo com sucesso!
+            </div>
+
+        </div>
+
+        <div class="feedback-box">
+
+            <h3>Você compraria conosco?</h3>
+
+            <div class="opcoes">
+
+                <button onclick="salvarFeedback(this)">
+                    Ruim
+                </button>
+
+                <button onclick="salvarFeedback(this)">
+                    Regular
+                </button>
+
+                <button onclick="salvarFeedback(this)">
+                    Bom
+                </button>
+
+            </div>
+
+            <div class="salvo">
+                Feedback salvo com sucesso!
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section id="comprar" class="fade">
+
+    <h2>Onde Comprar</h2>
+
+    <div class="lojas">
+
+        <div class="loja">
+
+            <h3>São Paulo - SP</h3>
+
+            <p>Avenida Paulista Agro Center, 450</p>
+
+            <p>Funcionamento: 08h às 12h | 14h às 18h</p>
+
+            <iframe
+            src="https://www.google.com/maps?q=Avenida+Paulista+São+Paulo&output=embed">
+            </iframe>
+
+            <div class="botoes-loja">
+
+                <a href="https://www.google.com/maps/search/Avenida+Paulista+São+Paulo"
+                target="_blank"
+                class="btn">
+
+                    TRAÇAR ROTA
+
+                </a>
+
+                <a href="https://wa.me/5599985554406"
+                target="_blank"
+                class="btn2">
+
+                    WHATSAPP
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="loja">
+
+            <h3>Rio de Janeiro - RJ</h3>
+
+            <p>Copacabana Agro Business, 720</p>
+
+            <p>Funcionamento: 08h às 12h | 14h às 18h</p>
+
+            <iframe
+            src="https://www.google.com/maps?q=Copacabana+Rio+de+Janeiro&output=embed">
+            </iframe>
+
+            <div class="botoes-loja">
+
+                <a href="https://www.google.com/maps/search/Copacabana+Rio+de+Janeiro"
+                target="_blank"
+                class="btn">
+
+                    TRAÇAR ROTA
+
+                </a>
+
+                <a href="https://wa.me/5599985554406"
+                target="_blank"
+                class="btn2">
+
+                    WHATSAPP
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="suporte fade" id="suporte">
+
+    <h2>Suporte Oficial</h2>
+
+    <p>
+        WhatsApp de apoio:
+        <strong>(99) 98555-4406</strong>
+    </p>
+
+    <a href="https://wa.me/5599985554406"
+    target="_blank"
+    class="btn">
+
+        CHAMAR NO WHATSAPP
+
+    </a>
+
+</section>
+
+<footer>
+
+    © 2026 VTractor - Todos os direitos reservados.
+
+</footer>
+
+<script>
+
+window.alert("Seja bem-vindo à VTractor!")
+
+/* MENU */
+
+function abrirMenu(){
+
+    document
+    .getElementById("sidebar")
+    .classList.toggle("active")
+
+}
+
+function fecharMenu(){
+
+    document
+    .getElementById("sidebar")
+    .classList.remove("active")
+
+}
+
+/* MODAL */
+
+function abrirTrator(img,titulo,desc){
+
+    document.getElementById("modal").style.display="flex"
+
+    document.getElementById("modal-img").src=img
+
+    document.getElementById("modal-title").innerHTML=titulo
+
+    document.getElementById("modal-desc").innerHTML=desc
+
+}
+
+function fecharModal(){
+
+    document.getElementById("modal").style.display="none"
+
+}
+
+/* FEEDBACK */
+
+function salvarFeedback(botao){
+
+    let box = botao.parentElement.parentElement
+
+    let salvo = box.querySelector(".salvo")
+
+    salvo.style.display="block"
+
+}
+
+/* EFEITO ENTRADA */
+
+const fades = document.querySelectorAll(".fade")
+
+window.addEventListener("scroll",()=>{
+
+    fades.forEach(fade=>{
+
+        const top = fade.getBoundingClientRect().top
+
+        if(top < window.innerHeight - 100){
+
+            fade.classList.add("show")
+
+        }
+
+    })
+
+})
+
+</script>
+
+</body>
+</html>
